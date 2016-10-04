@@ -17,10 +17,9 @@ function getDrawScore(score) {
     const DRAW_SCORE = {
         0: "Love-All",
         1: "Fifteen-All",
-        2: "Thirty-All",
-        deuce: "Deuce"
+        2: "Thirty-All"
     };
-    return DRAW_SCORE[score] || DRAW_SCORE.deuce;
+    return DRAW_SCORE[score] || "Deuce";
 }
 
 
@@ -53,17 +52,22 @@ function getStandardScore(scorePlayerOne, scorePlayerTwo) {
     return `${playerOneScoreDescription}-${playerTwoScoreDescription}`;
 }
 
-TennisGame1.prototype.getScore = function () {
-    const isDrawScore = this.scorePlayerOne === this.scorePlayerTwo;
-    const isAdvantageGame = this.scorePlayerOne >= 4 || this.scorePlayerTwo >= 4;
-
-    if (isDrawScore) {
-        return getDrawScore(this.scorePlayerOne);
-    } else if (isAdvantageGame) {
-        return getAdvantageGameScore(this.scorePlayerOne, this.scorePlayerTwo)
-    } else {
-        return getStandardScore(this.scorePlayerOne, this.scorePlayerTwo);
+const gameStateMachine = [
+    {
+        isGameInState: (scorePlayerOne, scorePlayerTwo) => scorePlayerOne === scorePlayerTwo,
+        getScore: getDrawScore
+    }, {
+        isGameInState: (scorePlayerOne, scorePlayerTwo) => scorePlayerOne >= 4 || scorePlayerTwo >= 4,
+        getScore: getAdvantageGameScore
+    }, {
+        isGameInState: () => true,
+        getScore: getStandardScore
     }
+];
+
+TennisGame1.prototype.getScore = function () {
+    return gameStateMachine.find(state => state.isGameInState(this.scorePlayerOne, this.scorePlayerTwo))
+        .getScore(this.scorePlayerOne, this.scorePlayerTwo);
 };
 
 module.exports = TennisGame1;
