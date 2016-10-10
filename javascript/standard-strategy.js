@@ -1,11 +1,8 @@
-module.exports = {
-    isGameInState: () => true,
-    getScore: function (scorePlayerOne, scorePlayerTwo) {
-        const playerOneScoreDescription = getSinglePlayerStandardScore(scorePlayerOne);
-        const playerTwoScoreDescription = getSinglePlayerStandardScore(scorePlayerTwo);
-        return `${playerOneScoreDescription}-${playerTwoScoreDescription}`;
-    }
-};
+function getScore(scorePlayerOne, scorePlayerTwo) {
+    const playerOneScoreDescription = getSinglePlayerStandardScore(scorePlayerOne);
+    const playerTwoScoreDescription = getSinglePlayerStandardScore(scorePlayerTwo);
+    return `${playerOneScoreDescription}-${playerTwoScoreDescription}`;
+}
 
 function getSinglePlayerStandardScore(tempScore) {
     const SINGLE_PLAYER_SCORE = {
@@ -16,3 +13,7 @@ function getSinglePlayerStandardScore(tempScore) {
     };
     return SINGLE_PLAYER_SCORE[tempScore];
 }
+module.exports = {
+    isGameInState: () => true,
+    getScore
+};
