@@ -1,6 +1,6 @@
 const tennisGameScore = require('./tennis-game-score');
 
-class TennisGame1 {
+module.exports = class {
     constructor() {
         this.scorePlayerOne = 0;
         this.scorePlayerTwo = 0;
@@ -17,6 +17,4 @@ class TennisGame1 {
     getScore() {
         return tennisGameScore(this.scorePlayerOne, this.scorePlayerTwo);
     }
-}
-
-module.exports = TennisGame1;
+};

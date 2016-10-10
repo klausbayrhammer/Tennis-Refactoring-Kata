@@ -2,12 +2,9 @@ const drawStrategy = require('./draw-strategy');
 const advantageStrategy = require('./advantage-strategy');
 const standardStrategy = require('./standard-strategy');
 
-const gameStateMachine = [
-    drawStrategy, advantageStrategy, standardStrategy
-];
+const scoringStrategies = [drawStrategy, advantageStrategy, standardStrategy];
 
 module.exports = function(scorePlayerOne, scorePlayerTwo) {
-    return gameStateMachine.find(state => state.isGameInState(scorePlayerOne, scorePlayerTwo))
-        .getScore(scorePlayerOne, scorePlayerTwo);
-
-}
+    const applicableStrategy = scoringStrategies.find(strategy => strategy.isGameInState(scorePlayerOne, scorePlayerTwo));
+    return applicableStrategy.getScore(scorePlayerOne, scorePlayerTwo);
+};
